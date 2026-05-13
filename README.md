@@ -271,8 +271,8 @@ Partners should implement retry with exponential backoff and avoid retrying non-
 | 1 | Login | POST | `/v1/login` | Get JWT token. |
 | 2 | Card list | POST | `/v1/card-list` | Find debit cards for a client. |
 | 3 | Card profile | POST | `/v1/cards-profile` | Get detailed card profile. |
-| 4 | Transaction history | GET | `/v1/transactions/payment-method/{client_id}/{payment_method_id}` | Raw transaction listing. |
-| 5 | Formatted transactions | GET | `/v1/transactions/payment-method/{client_id}/{payment_method_id}/formatted` | Categorized transaction listing. |
+| 4 | Transaction history | GET | `/v1/transactions/payment-method/{client_ref_id}/{card_req_id}` | Raw transaction listing. |
+| 5 | Formatted transactions | GET | `/v1/transactions/payment-method/{client_ref_id}/{card_req_id}/formatted` | Categorized transaction listing. |
 | 6 | Unlock card | POST | `/v1/cards/unblock` | Unlock a blocked card. |
 | 7 | Block by cardholder | POST | `/v1/cards/block-by-cardholder` | Temporarily block card by cardholder request. |
 | 8 | Block by system | POST | `/v1/cards/block-by-system` | Temporarily block card by system request. |
@@ -505,16 +505,16 @@ Example request:
 All transaction APIs use:
 
 ```text
-client_id = customer/client ID
-payment_method_id = card payment method ID, usually `card_req_id` from /v1/card-list
+client_ref_id = customer/client ID
+card_req_id = card payment method ID, usually `card_req_id` from /v1/card-list
 ```
 
 Path parameter validation:
 
 | Parameter | Required | Validation |
 | --- | --- | --- |
-| `client_id` | Mandatory | 1-50 characters, `^[0-9A-Za-z_-]+$` |
-| `payment_method_id` | Mandatory | 1-50 characters, `^[0-9A-Za-z_-]+$` |
+| `client_ref_id` | Mandatory | 1-50 characters, `^[0-9A-Za-z_-]+$` |
+| `card_req_id` | Mandatory | 1-50 characters, `^[0-9A-Za-z_-]+$` |
 
 Common query parameters:
 
@@ -528,7 +528,7 @@ Common query parameters:
 ### 11.1 Raw Transaction History
 
 ```http
-GET /v1/transactions/payment-method/{client_id}/{payment_method_id}
+GET /v1/transactions/payment-method/{client_ref_id}/{card_req_id}
 ```
 Example respone:
 
